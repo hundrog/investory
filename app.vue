@@ -29,6 +29,6 @@ const logout = async () => {
       </div>
     </div>
     <NuxtPage />
-    <Toaster />
+    <Toaster richColors/>
   </div>
 </template>

@@ -12,7 +12,7 @@ const signInWithEmail = async () => {
   if (error) {
     toast.error(error.message, {
       description: 'Please check your email and password.',
-      duration: 5000
+      duration: 5000,
     })
   } else {
     navigateTo('/confirm')
