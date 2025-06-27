@@ -82,6 +82,15 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      perform_refill: {
+        Args: {
+          input_product_id: string
+          input_amount: number
+          input_total_cost: number
+          input_user_id: string
+        }
+        Returns: undefined
+      }
       perform_sale: {
         Args: {
           input_product_id: string

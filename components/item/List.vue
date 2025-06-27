@@ -31,8 +31,8 @@ onMounted(async () => {
         <div class="text-xs font-semibold opacity-60">{{ item.amount }} restantes</div>
         <div class="text-xs font-semibold">Ganancia: ${{ item.price - item.cost }}</div>
       </div>
-      <ItemRefillButton />
       <ItemSellButton :product-name="item.name" :product-id="item.id" />
+      <ItemRefillButton :product-name="item.name" :product-id="item.id" />
       <ItemEditButton />
     </li>
   </ul>

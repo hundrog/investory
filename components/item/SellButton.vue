@@ -24,19 +24,23 @@ const performSell = async () => {
         });
         return;
     }
-    const { success } = await $fetch('/api/sell', {
-        method: 'POST',
-        body: {
-            productId: props.productId,
-            amount: amount.value,
-        }
-    });
-    if (!success) {
+    try {
+        await $fetch('/api/sell', {
+            method: 'POST',
+            body: {
+                productId: props.productId,
+                amount: amount.value,
+            }
+        });
+
+    closeModal
+    } catch (error) {
         toast.error('Error selling item', {
+            description: error || 'An error occurred while selling the item.',
             duration: 5000
         });
+        return;
     }
-    closeModal();
 };
 
 </script>
