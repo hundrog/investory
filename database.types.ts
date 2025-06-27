@@ -7,31 +7,6 @@ export type Json =
   | Json[]
 
 export type Database = {
-  graphql_public: {
-    Tables: {
-      [_ in never]: never
-    }
-    Views: {
-      [_ in never]: never
-    }
-    Functions: {
-      graphql: {
-        Args: {
-          operationName?: string
-          query?: string
-          variables?: Json
-          extensions?: Json
-        }
-        Returns: Json
-      }
-    }
-    Enums: {
-      [_ in never]: never
-    }
-    CompositeTypes: {
-      [_ in never]: never
-    }
-  }
   public: {
     Tables: {
       products: {
@@ -39,7 +14,7 @@ export type Database = {
           amount: number
           cost: number
           created_at: string | null
-          id: number
+          id: string
           name: string
           price: number
           user_id: string
@@ -48,7 +23,7 @@ export type Database = {
           amount?: number
           cost: number
           created_at?: string | null
-          id?: number
+          id?: string
           name: string
           price: number
           user_id: string
@@ -57,7 +32,7 @@ export type Database = {
           amount?: number
           cost?: number
           created_at?: string | null
-          id?: number
+          id?: string
           name?: string
           price?: number
           user_id?: string
@@ -68,28 +43,28 @@ export type Database = {
         Row: {
           amount: number
           created_at: string | null
-          id: number
+          id: string
           money: number
           operation_type: string
-          product_id: number | null
+          product_id: string | null
           user_id: string
         }
         Insert: {
           amount: number
           created_at?: string | null
-          id?: number
+          id?: string
           money: number
           operation_type: string
-          product_id?: number | null
+          product_id?: string | null
           user_id: string
         }
         Update: {
           amount?: number
           created_at?: string | null
-          id?: number
+          id?: string
           money?: number
           operation_type?: string
-          product_id?: number | null
+          product_id?: string | null
           user_id?: string
         }
         Relationships: [
@@ -107,7 +82,14 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      perform_sale: {
+        Args: {
+          input_product_id: string
+          input_amount: number
+          input_user_id: string
+        }
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never
@@ -224,9 +206,6 @@ export type CompositeTypes<
     : never
 
 export const Constants = {
-  graphql_public: {
-    Enums: {},
-  },
   public: {
     Enums: {},
   },
