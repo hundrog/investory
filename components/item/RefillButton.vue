@@ -39,7 +39,7 @@ const refillItem = async () => {
             }
         });
 
-    closeModal
+    closeModal()
     } catch (error) {
         toast.error('Error refilling item', {
             description: error || 'An error occurred while refilling the item.',

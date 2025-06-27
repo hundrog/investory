@@ -7,18 +7,20 @@ export default defineEventHandler(async (event) => {
     const user = await serverSupabaseUser(event)
     const body = await readBody(event)
 
-    const { productId, amount, cost } = body
-
     if (!user) throw createError({ statusCode: 401, statusMessage: 'Unauthorized' })
 
-    const { error: txError } = await client.rpc('perform_refill', {
-        input_product_id: productId,
-        input_amount: amount,
-        input_total_cost: cost,
-        input_user_id: user.id
-    })
+    // Separate body into individual fields
+    const { id, name, price, amount, cost } = body
 
-    if (txError) throw createError({ statusCode: 500, statusMessage: txError.message })
+    const { data, error } = await client.from('products')
+        .update({ name, price, amount, cost })
+        .eq('id', id)
+        .eq('status', 'active')
+        .select()
 
-    return { success: true }
+    if (error) {
+        throw createError({ statusCode: 500, statusMessage: 'Failed to update product' })
+    }
+
+    return { data: data[0] }
 })

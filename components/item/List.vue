@@ -9,6 +9,7 @@ onMounted(async () => {
   const { data, error } = await client
     .from('products')
     .select('*')
+    .eq('status', 'active')
 
   if (error) {
     toast.error(error.message, {
@@ -22,10 +23,11 @@ onMounted(async () => {
 </script>
 <template>
   <ul class="list bg-base-100 rounded-box shadow-md space-y-2">
-
-    <!-- <li class="p-4 pb-2 text-xs opacity-60 tracking-wide">Most played songs this week</li> -->
+    <div class="flex items-center justify-end">
+      <NuxtLink to="/product/new" class="btn btn-primary">Add Product</NuxtLink>
+    </div>
     <li class="list-row" v-for="item in items" :key="item.id">
-      <div>{{ item.id }}</div>
+      <div></div>
       <div>
         <div class="text-xl">{{ item.name }}</div>
         <div class="text-xs font-semibold opacity-60">{{ item.amount }} restantes</div>
@@ -33,7 +35,7 @@ onMounted(async () => {
       </div>
       <ItemSellButton :product-name="item.name" :product-id="item.id" />
       <ItemRefillButton :product-name="item.name" :product-id="item.id" />
-      <ItemEditButton />
+      <ItemEditButton :product-id="item.id"/>
     </li>
   </ul>
 </template>

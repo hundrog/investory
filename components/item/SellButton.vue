@@ -33,7 +33,7 @@ const performSell = async () => {
             }
         });
 
-    closeModal
+    closeModal()
     } catch (error) {
         toast.error('Error selling item', {
             description: error || 'An error occurred while selling the item.',
