@@ -12,6 +12,7 @@ export default defineEventHandler(async (event) => {
         .from('products')
         .select('*')
         .eq('status', 'active')
+        .order('name', { ascending: true })
     if (productError) {
         throw createError({ statusCode: 500, statusMessage: 'Failed to fetch products' })
     }

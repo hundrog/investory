@@ -2,10 +2,31 @@
 import { toast } from 'vue-sonner'
 import type { Database } from '~/database.types'
 type Product = Database['public']['Tables']['products']['Row']
+const supabase = useSupabaseClient()
 const items = ref<Product[]>([])
 const loading = ref(true)
 
 onMounted(async () => {
+  fetchItems()
+  theWinds()
+})
+
+const theWinds = () => {
+  supabase.channel('table-db-changes')
+    .on(
+      'postgres_changes',
+      {
+        event: '*',
+        schema: 'public',
+        table: 'products',
+      },
+      () => fetchItems()
+    )
+    .subscribe()
+}
+
+const fetchItems = async () => {
+  loading.value = true
   try {
     const { data } = await $fetch(`/api/products`)
     items.value = data
@@ -14,10 +35,10 @@ onMounted(async () => {
   } finally {
     loading.value = false
   }
-})
+}
 </script>
 <template>
-  <PageLoader  v-if="loading"/>
+  <PageLoader v-if="loading" />
   <ul class="list bg-base-100 rounded-box shadow-md space-y-2" v-else>
     <div class="flex items-center justify-end">
       <NuxtLink to="/product/new" class="btn btn-primary">Add Product</NuxtLink>
@@ -31,7 +52,7 @@ onMounted(async () => {
       </div>
       <ItemSellButton :product-name="item.name" :product-id="item.id" />
       <ItemRefillButton :product-name="item.name" :product-id="item.id" />
-      <ItemEditButton :product-id="item.id"/>
+      <ItemEditButton :product-id="item.id" />
     </li>
   </ul>
 </template>
