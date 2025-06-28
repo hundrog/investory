@@ -2,27 +2,23 @@
 import { toast } from 'vue-sonner'
 import type { Database } from '~/database.types'
 type Product = Database['public']['Tables']['products']['Row']
-const client = useSupabaseClient<Database>()
 const items = ref<Product[]>([])
+const loading = ref(true)
 
 onMounted(async () => {
-  const { data, error } = await client
-    .from('products')
-    .select('*')
-    .eq('status', 'active')
-
-  if (error) {
-    toast.error(error.message, {
-      description: 'Something went wrong while fetching the products.',
-      duration: 5000
-    })
-  } else {
+  try {
+    const { data } = await $fetch(`/api/products`)
     items.value = data
+  } catch (e) {
+    toast.error('Error loading products')
+  } finally {
+    loading.value = false
   }
 })
 </script>
 <template>
-  <ul class="list bg-base-100 rounded-box shadow-md space-y-2">
+  <PageLoader  v-if="loading"/>
+  <ul class="list bg-base-100 rounded-box shadow-md space-y-2" v-else>
     <div class="flex items-center justify-end">
       <NuxtLink to="/product/new" class="btn btn-primary">Add Product</NuxtLink>
     </div>

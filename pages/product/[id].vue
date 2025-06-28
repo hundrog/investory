@@ -9,7 +9,6 @@ const product = ref<Product>()
 const route = useRoute()
 
 onMounted(async () => {
-  console.log('Loading product', route.params.id)
   try {
     const { data } = await $fetch(`/api/product?id=${route.params.id}`)
     product.value = data
@@ -67,6 +66,6 @@ const saveProduct = async () => {
       <button class="btn btn-primary w-full mt-4" type="submit">Save</button>
       <NuxtLink to="/" class="btn w-full" type="button">Back</NuxtLink>
     </form>
-    <div v-else class="text-center">Loading...</div>
+    <PageLoader />
   </div>
 </template>
