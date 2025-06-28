@@ -7,6 +7,7 @@ const props = defineProps<{
 }>();
 const amount = ref(0);
 const modalName = computed(() => `sellModal-${props.productId}`)
+const loading = ref(false);
 
 const openModal = () => {
     const modal = document.getElementById(modalName.value) as HTMLDialogElement;
@@ -18,6 +19,7 @@ const closeModal = () => {
 };
 
 const performSell = async () => {
+    loading.value = true;
     if (amount.value <= 0) {
         toast.error('Amount must be greater than 0', {
             duration: 5000
@@ -33,7 +35,7 @@ const performSell = async () => {
             }
         });
 
-    closeModal()
+        closeModal()
     } catch (error) {
         toast.error('Error selling item', {
             description: error || 'An error occurred while selling the item.',
@@ -68,7 +70,11 @@ const performSell = async () => {
             <div class="modal-action">
                 <!-- <form method="dialog" class="space-x-2"> -->
                 <!-- if there is a button in form, it will close the modal -->
-                <button class="btn btn-primary" @click.stop="performSell">Save</button>
+                <button class="btn btn-primary" v-if="loading" disabled>
+                    <span class="loading loading-spinner"></span>
+                    Save
+                </button>
+                <button class="btn btn-primary" @click.stop="performSell" v-else>Save</button>
                 <button class="btn" @click="closeModal">Close</button>
                 <!-- </form> -->
             </div>

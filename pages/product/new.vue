@@ -6,7 +6,10 @@ const product = ref({
   price: 0,
 })
 
+const loading = ref(false)
+
 const saveProduct = async () => {
+  loading.value = true
   try {
     const { data } = await $fetch('/api/product', {
       method: 'POST',
@@ -36,7 +39,12 @@ const saveProduct = async () => {
         <input class="input input-bordered w-full" type="number" min="0" step="0.01" v-model.number="product.price"
           required />
       </div>
-      <button class="btn btn-primary w-full mt-4" type="submit">Save</button>
+
+      <button class="btn btn-primary w-full mt-4" v-if="loading" disabled>
+        <span class="loading loading-spinner"></span>
+        Save
+      </button>
+      <button class="btn btn-primary w-full mt-4" type="submit" v-else>Save</button>
       <NuxtLink to="/" class="btn w-full" type="button">Back</NuxtLink>
     </form>
   </div>

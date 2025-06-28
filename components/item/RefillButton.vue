@@ -5,6 +5,7 @@ const props = defineProps<{
     productName?: string
 }>();
 const modalName = computed(() => `refillModal-${props.productId}`)
+const loading = ref(false);
 
 const openModal = () => {
     const modal = document.getElementById(modalName.value) as HTMLDialogElement;
@@ -17,6 +18,7 @@ const closeModal = () => {
 const amount = ref(0);
 const cost = ref(0.0);
 const refillItem = async () => {
+    loading.value = true;
     if (amount.value <= 0) {
         toast.error('Amount must be greater than 0', {
             duration: 5000
@@ -39,7 +41,7 @@ const refillItem = async () => {
             }
         });
 
-    closeModal()
+        closeModal()
     } catch (error) {
         toast.error('Error refilling item', {
             description: error || 'An error occurred while refilling the item.',
@@ -68,14 +70,18 @@ const refillItem = async () => {
                     <span class="label">Amount</span>
                 </label>
                 <label class="floating-label">
-                    <input type="text" placeholder="Type here" class="input" v-model="cost"/>
+                    <input type="text" placeholder="Type here" class="input" v-model="cost" />
                     <span class="label">Cost</span>
                 </label>
             </div>
             <div class="modal-action">
                 <form method="dialog" class="space-x-2">
                     <!-- if there is a button in form, it will close the modal -->
-                    <button class="btn btn-primary" @click.stop="refillItem">Save</button>
+                    <button class="btn btn-primary" v-if="loading" disabled>
+                        <span class="loading loading-spinner"></span>
+                        Save
+                    </button>
+                    <button class="btn btn-primary" @click.stop="refillItem" v-else>Save</button>
                     <button class="btn">Close</button>
                 </form>
             </div>
