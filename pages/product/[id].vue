@@ -56,7 +56,7 @@ const saveProduct = async () => {
       </div>
       <div>
         <label class="label">Amount</label>
-        <input class="input input-bordered w-full" type="number" min="0" v-model.number="product.amount" disabled />
+        <input class="input input-bordered w-full" type="number" min="0" v-model.number="product.amount" />
       </div>
       <div>
         <label class="label">Cost</label>
